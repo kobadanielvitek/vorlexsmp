@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="cs" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pearl Craft | Official Minecraft Server</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        pearl: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            400: '#c084fc',
+                            500: '#a855f7',
+                            600: '#9333ea',
+                            700: '#7e22ce',
+                            900: '#3b0764',
+                        },
+                        pvp: {
+                            glow: '#d946ef',
+                            accent: '#a855f7',
+                            border: '#c084fc'
+                        },
+                        darkinput: '#130d24'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #090514;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .heading-font {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Glassmorphism effects */
+        .glass-card {
+            background: rgba(19, 13, 36, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card-pvp {
+            background: rgba(22, 11, 40, 0.85);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            box-shadow: 0 0 25px -5px rgba(168, 85, 247, 0.25);
+        }
+
+        .glass-card-pvp:hover {
+            border-color: rgba(217, 70, 239, 0.6);
+            box-shadow: 0 0 35px -2px rgba(217, 70, 239, 0.4);
+        }
+
+        .dark-input-custom {
+            background-color: #130d24 !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(168, 85, 247, 0.25);
+        }
+
+        .dark-input-custom:focus {
+            outline: none;
+            border-color: #a855f7;
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.25);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090514;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b0764;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a855f7;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-purple-600 selection:text-white">
+
+    <div class="fixed inset-0 pointer-events-none z-0 opacity-40">
+        <div class="absolute top-1/4 left-10 w-96 h-96 bg-purple-900/30 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-1/3 right-10 w-96 h-96 bg-fuchsia-900/20 rounded-full blur-3xl"></div>
+        <div class="absolute top-2/3 left-1/3 w-80 h-80 bg-emerald-900/20 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Notification Toast Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
+
+    <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-opacity-80 bg-[#090514]/90 border-b border-purple-900/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Server Brand -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-purple-600 via-fuchsia-500 to-emerald-400 p-0.5 shadow-lg shadow-purple-900/40 group-hover:scale-105 transition-transform">
+                    <div class="w-full h-full bg-[#090514] rounded-[10px] flex items-center justify-center">
+                        <svg class="w-6 h-6 text-purple-400 group-hover:text-emerald-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <span class="text-2xl font-black heading-font tracking-wide bg-gradient-to-r from-white via-purple-200 to-emerald-400 bg-clip-text text-transparent">PEARL CRAFT</span>
+                    <span class="block text-xs text-purple-300/70 font-semibold tracking-wider uppercase">Official Server</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="#home" data-i18n="nav_home" class="text-purple-200 hover:text-emerald-400 transition-colors">Hlavní strana</a>
+                <a href="#gamemodes" data-i18n="nav_modes" class="text-purple-200 hover:text-emerald-400 transition-colors">Herní Módy</a>
+                <a href="#ranks" data-i18n="nav_ranks" class="text-purple-200 hover:text-emerald-400 transition-colors">Ranky Zdarma</a>
+                <a href="#forms" data-i18n="nav_forms" class="text-purple-200 hover:text-emerald-400 transition-colors">Nábor & Unban</a>
+                <a href="#rules" data-i18n="nav_rules" class="text-purple-200 hover:text-emerald-400 transition-colors">Pravidla</a>
+            </nav>
+
+            <!-- Server IP Copy Quick Action & Language Switcher -->
+            <div class="flex items-center gap-3">
+                <!-- IP Copy Button -->
+                <button onclick="copyServerIP()" class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-950/60 hover:bg-purple-900/80 border border-purple-500/30 text-purple-200 hover:text-white transition-all text-xs font-semibold shadow-inner">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span id="nav-ip-text">pearlcraft.mangoohost.live</span>
+                    <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                    </svg>
+                </button>
+
+                <!-- Language Switcher -->
+                <div class="relative">
+                    <select id="lang-selector" onchange="changeLanguage(this.value)" class="bg-[#130d24] text-purple-200 border border-purple-500/40 rounded-xl px-3 py-1.5 text-xs font-bold focus:outline-none focus:border-purple-400 cursor-pointer">
+                        <option value="cs">🇨🇿 CS</option>
+                        <option value="en">🇬🇧 EN</option>
+                        <option value="de">🇩🇪 DE</option>
+                        <option value="pl">🇵🇱 PL</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
+            
+            <!-- Live Server Status Badge -->
+            <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-purple-900/40 border border-purple-500/30 mb-8 backdrop-blur-md">
+                <span class="relative flex h-3 w-3">
+                    <span id="status-pulse" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span id="status-dot" class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                </span>
+                <span id="status-text" class="text-xs font-bold uppercase tracking-widest text-emerald-300">ONLINE</span>
+                <span class="text-purple-400/50">|</span>
+                <span id="player-count" class="text-xs font-bold text-purple-200">Načítám hráče...</span>
+            </div>
+
+            <!-- Title Header -->
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-black heading-font tracking-tight text-white mb-6">
+                Vítejte na <span class="bg-gradient-to-r from-purple-400 via-fuchsia-300 to-emerald-400 bg-clip-text text-transparent">Pearl Craft</span>
+            </h1>
+            <p data-i18n="hero_subtitle" class="max-w-2xl mx-auto text-base sm:text-lg text-purple-200/80 mb-10 leading-relaxed">
+                Prémiový československý Minecraft server zaměřený na pohodový Survival, férový OneBlock a akční PvP souboje! Připoj se ještě dnes!
+            </p>
+
+            <!-- IP Box Hero Widget -->
+            <div class="max-w-md mx-auto p-2 sm:p-3 rounded-2xl glass-card border border-purple-500/30 flex items-center justify-between shadow-2xl mb-10">
+                <div class="px-4 text-left">
+                    <span data-i18n="ip_label" class="block text-[10px] font-bold uppercase tracking-wider text-purple-400">IP Adresa Serveru</span>
+                    <span class="text-sm sm:text-base font-mono font-bold text-white select-all">pearlcraft.mangoohost.live</span>
+                </div>
+                <button onclick="copyServerIP()" class="px-5 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-sm shadow-lg shadow-emerald-900/40 hover:scale-105 transition-all flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                    </svg>
+                    <span data-i18n="copy_ip_btn">Kopírovat IP</span>
+                </button>
+            </div>
+
+            <!-- Quick Action Links -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#gamemodes" data-i18n="btn_explore_modes" class="px-6 py-3 rounded-xl bg-purple-900/50 hover:bg-purple-800/70 border border-purple-500/40 text-purple-200 hover:text-white font-bold text-sm transition-all">
+                    Prozkoumat Módy
+                </a>
+                <a href="#forms" data-i18n="btn_join_team" class="px-6 py-3 rounded-xl bg-purple-900/50 hover:bg-purple-800/70 border border-purple-500/40 text-purple-200 hover:text-white font-bold text-sm transition-all">
+                    Podat Žádost / Nábor
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="gamemodes" class="py-16 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14">
+                <h2 data-i18n="modes_title" class="text-3xl sm:text-4xl font-black heading-font text-white mb-3">
+                    Unikátní Herní Módy
+                </h2>
+                <p data-i18n="modes_subtitle" class="text-purple-300/70 text-sm sm:text-base max-w-xl mx-auto">
+                    Vyber si svůj oblíbený styl hraní. Vše navrženo pro plynulý zážitek bez zbytečného balastu.
+                </p>
+            </div>
+
+            <!-- Grid of Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- CARD 1: SURVIVAL -->
+                <div class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between hover:border-emerald-500/50 transition-all duration-300 group">
+                    <div>
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 p-3 shadow-lg shadow-emerald-900/40 flex items-center justify-center">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                                </svg>
+                            </div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/30">
+                                ACTIVE
+                            </span>
+                        </div>
+                        <h3 class="text-2xl font-bold heading-font text-white mb-3">Survival</h3>
+                        <p data-i18n="survival_desc" class="text-purple-200/70 text-sm leading-relaxed mb-6">
+                            Čistá survival zábava bez zbytečných pluginů jako SlimeFun! Reálná ekonomika, náročné výzvy, komunitní land claimy a přátelské prostředí.
+                        </p>
+                    </div>
+                    <ul class="space-y-2.5 border-t border-purple-900/40 pt-4 text-xs font-medium text-purple-200/90">
+                        <li class="flex items-center gap-2 text-emerald-300">
+                            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Bez SlimeFun (Čistý Minecraft)</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-emerald-300">
+                            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Ochrana rezidencí & Hráčská ekonomika</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-emerald-300">
+                            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Trhovště & Hráčské shopy</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- CARD 2: ONEBLOCK -->
+                <div class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between hover:border-cyan-500/50 transition-all duration-300 group">
+                    <div>
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-700 p-3 shadow-lg shadow-cyan-900/40 flex items-center justify-center">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                </svg>
+                            </div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-cyan-400 bg-cyan-950/80 px-3 py-1 rounded-full border border-cyan-500/30">
+                                ACTIVE
+                            </span>
+                        </div>
+                        <h3 class="text-2xl font-bold heading-font text-white mb-3">OneBlock</h3>
+                        <p data-i18n="oneblock_desc" class="text-purple-200/70 text-sm leading-relaxed mb-6">
+                            Klasický OneBlock zážitek na vyostřeném bloku bez nepřehledných fází! Stavěj svůj ostrov od jednoho bloku, rozšiřuj základnu a soupeř v žebříčcích.
+                        </p>
+                    </div>
+                    <ul class="space-y-2.5 border-t border-purple-900/40 pt-4 text-xs font-medium text-purple-200/90">
+                        <li class="flex items-center gap-2 text-cyan-300">
+                            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Přehledný vývoj bez zbytečných fází</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-cyan-300">
+                            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Ostrovní úkoly & Týmový OneBlock</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-cyan-300">
+                            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Top Ostrovy žebříček</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- CARD 3: PVP ARENA (CORRECTED PURPLE THEME & SWORDS SVG ICON) -->
+                <div class="glass-card-pvp rounded-2xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 relative overflow-hidden group">
+                    <div>
+                        <!-- Badge & Icon Header -->
+                        <div class="flex items-center justify-between mb-6">
+                            <!-- Purple/Magenta Icon Box with Sharp Crossed Swords SVG Icon -->
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 via-fuchsia-600 to-pink-500 p-3 shadow-lg shadow-purple-500/50 flex items-center justify-center border border-fuchsia-300/40">
+                                <svg class="w-8 h-8 text-white drop-shadow-md" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M6.92 5.51L5.51 6.92l4.24 4.24-1.41 1.42 2.12 2.12 1.42-1.41 2.83 2.83-2.83 2.83-1.41-1.42-2.12 2.12 1.41 1.42-1.41 1.41 2.83 2.83 1.41-1.41 1.42 1.41 2.12-2.12-1.41-1.41 2.83-2.83 2.83 2.83 1.41-1.41 2.12 2.12 1.41-1.42-1.41-1.41 1.41-1.41-4.24-4.24 1.41-1.42-2.12-2.12-1.42 1.41-2.83-2.83 2.83-2.83 1.41 1.42 2.12-2.12-1.41-1.42 1.41-1.41-2.83-2.83-1.41 1.41-1.42-1.41-2.12 2.12 1.41 1.41-2.83 2.83zM15.5 8.5l1.42-1.41 1.41 1.41-1.41 1.42z"/>
+                                </svg>
+                            </div>
+                            <!-- Purple Badge -->
+                            <span data-i18n="pvp_badge" class="text-xs font-black uppercase tracking-wider text-fuchsia-300 bg-purple-950/90 px-3.5 py-1.5 rounded-full border border-fuchsia-500/50 shadow-md shadow-fuchsia-950/50">
+                                V PŘÍPRAVĚ
+                            </span>
+                        </div>
+
+                        <h3 class="text-2xl font-bold heading-font text-white mb-3">PvP Arena</h3>
+                        <!-- Corrected copy without custom kity or guildwars -->
+                        <p data-i18n="pvp_desc" class="text-purple-200/80 text-sm leading-relaxed mb-6">
+                            Připravovaná PvP aréna! Těš se na speciální <strong class="text-fuchsia-300 font-bold">meče z Pearl</strong>, Golden Apples (Gapply) a souboje o hodnosti v intenzivních duelech.
+                        </p>
+                    </div>
+
+                    <!-- Bullet Points -->
+                    <ul class="space-y-2.5 border-t border-purple-500/30 pt-4 text-xs font-semibold text-purple-200">
+                        <li class="flex items-center gap-2 text-fuchsia-300">
+                            <svg class="w-4 h-4 text-fuchsia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                            <span data-i18n="pvp_feat_1">Speciální Pearl Meče & Gapply</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-fuchsia-300">
+                            <svg class="w-4 h-4 text-fuchsia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                            <span data-i18n="pvp_feat_2">Arénový Ranking Systém</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-fuchsia-300">
+                            <svg class="w-4 h-4 text-fuchsia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                            <span data-i18n="pvp_feat_3">Pravidelné PvP Turnaje</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="ranks" class="py-16 relative z-10 bg-[#0c071d]/60 border-y border-purple-900/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-xs font-black tracking-wider uppercase mb-3">
+                    100% Free To Play
+                </span>
+                <h2 data-i18n="ranks_title" class="text-3xl sm:text-4xl font-black heading-font text-white mb-3">
+                    Hodnosti & VIP ZDARMA
+                </h2>
+                <p data-i18n="ranks_subtitle" class="text-purple-300/80 text-sm sm:text-base max-w-2xl mx-auto">
+                    Na Pearl Craftu se výhody <strong class="text-white">NEKUPUJÍ za reálné peníze</strong>! Všechny hodnosti získáváte zdarma za odehraný čas, hlasování pro server a učást v komunitních akcích.
+                </p>
+            </div>
+
+            <!-- Rank Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- VIP Rank -->
+                <div class="glass-card rounded-2xl p-6 border border-purple-500/20 hover:border-purple-400/50 transition-all">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-xl font-bold heading-font text-cyan-300">[VIP]</span>
+                        <span class="text-xs font-bold px-3 py-1 bg-purple-900/50 rounded-full text-purple-200">24 hodin odehráno</span>
+                    </div>
+                    <div class="text-3xl font-black text-emerald-400 mb-4">0 CZK <span class="text-xs text-purple-300 font-normal">/ Navždy</span></div>
+                    <ul class="space-y-2 text-xs text-purple-200/90 mb-6">
+                        <li class="flex items-center gap-2">✓ Prefix <strong>[VIP]</strong> v chatu</li>
+                        <li class="flex items-center gap-2">✓ Možnost mít 3 domovy (/sethome)</li>
+                        <li class="flex items-center gap-2">✓ Příkaz /hat (blok na hlavu)</li>
+                        <li class="flex items-center gap-2">✓ Rezervovaný slot při plném serveru</li>
+                    </ul>
+                </div>
+
+                <!-- Pearl VIP Rank -->
+                <div class="glass-card rounded-2xl p-6 border-2 border-purple-500/60 shadow-xl shadow-purple-900/30 relative">
+                    <div class="absolute -top-3 right-6 bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white text-[10px] font-black uppercase px-3 py-0.5 rounded-full shadow">
+                        Oblíbené
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-xl font-bold heading-font text-fuchsia-300">[PEARL VIP]</span>
+                        <span class="text-xs font-bold px-3 py-1 bg-purple-900/50 rounded-full text-purple-200">50 Hlasů / Akce</span>
+                    </div>
+                    <div class="text-3xl font-black text-emerald-400 mb-4">0 CZK <span class="text-xs text-purple-300 font-normal">/ Navždy</span></div>
+                    <ul class="space-y-2 text-xs text-purple-200/90 mb-6">
+                        <li class="flex items-center gap-2">✓ Prefix <strong>[PEARL VIP]</strong> v chatu</li>
+                        <li class="flex items-center gap-2">✓ Příkaz /fly ve vlastním pozemku</li>
+                        <li class="flex items-center gap-2">✓ Možnost mít 5 domovů</li>
+                        <li class="flex items-center gap-2">✓ Speciální částicové efekty</li>
+                    </ul>
+                </div>
+
+                <!-- Legend VIP Rank -->
+                <div class="glass-card rounded-2xl p-6 border border-amber-500/30 hover:border-amber-400/60 transition-all">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-xl font-bold heading-font text-amber-300">[LEGEND VIP]</span>
+                        <span class="text-xs font-bold px-3 py-1 bg-purple-900/50 rounded-full text-purple-200">Top Hráči Měsíce</span>
+                    </div>
+                    <div class="text-3xl font-black text-emerald-400 mb-4">0 CZK <span class="text-xs text-purple-300 font-normal">/ Navždy</span></div>
+                    <ul class="space-y-2 text-xs text-purple-200/90 mb-6">
+                        <li class="flex items-center gap-2">✓ Prefix <strong>[LEGEND]</strong> se září</li>
+                        <li class="flex items-center gap-2">✓ Všechny výhody Pearl VIP</li>
+                        <li class="flex items-center gap-2">✓ Možnost mít 10 domovů</li>
+                        <li class="flex items-center gap-2">✓ Exkluzivní kosmetické předměty</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="forms" class="py-16 relative z-10">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 data-i18n="forms_title" class="text-3xl sm:text-4xl font-black heading-font text-white mb-3">
+                    Komunitní Formuláře
+                </h2>
+                <p data-i18n="forms_subtitle" class="text-purple-300/70 text-sm">
+                    Chceš se přidat do A-Týmu nebo řešíš udělený trest? Vyber formulář níže.
+                </p>
+            </div>
+
+            <!-- Form Tabs Switcher -->
+            <div class="flex rounded-xl bg-[#130d24] p-1.5 border border-purple-900/40 mb-8">
+                <button id="tab-recruitment-btn" onclick="switchFormTab('recruitment')" class="flex-1 py-3 rounded-lg font-bold text-sm transition-all bg-purple-600 text-white shadow-md">
+                    📝 Nábor do A-Týmu
+                </button>
+                <button id="tab-unban-btn" onclick="switchFormTab('unban')" class="flex-1 py-3 rounded-lg font-bold text-sm transition-all text-purple-300 hover:text-white">
+                    🔓 Žádost o Unban
+                </button>
+            </div>
+
+            <!-- TAB 1: TEAM RECRUITMENT FORM -->
+            <div id="form-recruitment-container" class="glass-card rounded-2xl p-6 sm:p-10 border border-purple-500/30">
+                <form id="recruitment-form" onsubmit="handleRecruitmentSubmit(event)" class="space-y-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold text-purple-300 uppercase mb-2">Minecraft Nick *</label>
+                            <input type="text" id="rec-nick" required placeholder="Napr. Steve_CZ" class="w-full px-4 py-3 rounded-xl dark-input-custom text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-purple-300 uppercase mb-2">Věk *</label>
+                            <input type="number" id="rec-age" required min="12" max="99" placeholder="Napr. 16" class="w-full px-4 py-3 rounded-xl dark-input-custom text-sm">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold text-purple-300 uppercase mb-2">Discord Tag *</label>
+                            <input type="text" id="rec-discord" required placeholder="Napr. nick#0000 nebo nick" class="w-full px-4 py-3 rounded-xl dark-input-custom text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-purple-300 uppercase mb-2">Pozice *</label>
+                            <select id="rec-role" required class="w-full px-4 py-3 rounded-xl dark-input-custom text-sm">
+                                <option value="Helper">Helper / Modérator</option>
+                                <option value="Builder">Builder / Stavitel</option>
+                                <option value="Developer">Developer / Admin</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-purple-300 uppercase mb-2">Proč zrovna ty? / Zkušenosti *</label>
+                        <textarea id="rec-exp" required rows="4" placeholder="Napiš nám něco o sobě, tvoje předchozí zkušenosti a kolik času můžeš věnovat serveru..." class="w-full px-4 py-3 rounded-xl dark-input-custom text-sm"></textarea>
+                    </div>
+
+                    <!-- Submission Target Note -->
+                    <p class="text-[11px] text-purple-300/60 italic">
+                        * Žádost bude zaznamenána do systému a odeslána správci na e-mail: <strong class="text-purple-200">koba.daniel.vitek@gmail.com</strong>
+                    </p>
+
+                    <!-- Submit Button: Emerald Green Button -->
+                    <button type="submit" class="w-full py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm tracking-wide shadow-lg shadow-emerald-950/50 transition-all hover:scale-[1.01]">
+                        ODESLAT ŽÁDOST DO NÁBORU
+                    </button>
+                </form>
+            </div>
+
+            <!-- TAB 2: UNBAN APPEAL FORM -->
+            <div id="form-unban-container" class="glass-card rounded-2xl p-6 sm:p-10 border border-purple-500/30 hidden">
+                <form id="unban-form" onsubmit="handleUnbanSubmit(event)" class="space-y-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold text-purple-300 uppercase mb-2">Minecraft Nick *</label>
+                            <input type="text" id="unban-nick" required placeholder="Napr. Alex_SK" class="w-full px-4 py-3 rounded-xl dark-input-custom text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-purple-300 uppercase mb-2">Discord Tag *</label>
+                            <input type="text" id="unban-discord" required placeholder="Napr. alex#1234" class="w-full px-4 py-3 rounded-xl dark-input-custom text-sm">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold text-purple-300 uppercase mb-2">Důvod Banu *</label>
+                            <input type="text" id="unban-reason" required placeholder="Napr. Fly / X-ray / Nedorozumění" class="w-full px-4 py-3 rounded-xl dark-input-custom text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-purple-300 uppercase mb-2">Kdo ban udělil (Admin)</label>
+                            <input type="text" id="unban-admin" placeholder="Napr. Console / AdminNick" class="w-full px-4 py-3 rounded-xl dark-input-custom text-sm">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-purple-300 uppercase mb-2">Vysvětlení & Důvod pro Unban *</label>
+                        <textarea id="unban-explanation" required rows="4" placeholder="Vysvětli situaci. Proč si myslíš, že by ti měl být udělen unban?" class="w-full px-4 py-3 rounded-xl dark-input-custom text-sm"></textarea>
+                    </div>
+
+                    <!-- Submission Target Note -->
+                    <p class="text-[11px] text-purple-300/60 italic">
+                        * Žádost bude zaznamenána do systému a odeslána správci na e-mail: <strong class="text-purple-200">koba.daniel.vitek@gmail.com</strong>
+                    </p>
+
+                    <!-- Submit Button: Emerald Green Button -->
+                    <button type="submit" class="w-full py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm tracking-wide shadow-lg shadow-emerald-950/50 transition-all hover:scale-[1.01]">
+                        ODESLAT ŽÁDOST O UNBAN
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="rules" class="py-16 relative z-10 bg-[#0c071d]/40">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 data-i18n="rules_title" class="text-3xl font-black heading-font text-white mb-2">Základní Pravidla Serveru</h2>
+                <p data-i18n="rules_subtitle" class="text-purple-300/70 text-sm">Dodržuj pravidla a užívej si hru bez komplikací.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                <div class="p-4 rounded-xl glass-card flex items-start gap-3">
+                    <span class="text-emerald-400 font-bold text-base">01</span>
+                    <div>
+                        <strong class="text-white block mb-1">Zákaz Cheatingu & Hacků</strong>
+                        <span class="text-purple-200/70">Používání jakýchkoliv zvýhodňujících klientů, modifikací (X-Ray, KillAura, Fly) je přísně zakázáno.</span>
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl glass-card flex items-start gap-3">
+                    <span class="text-emerald-400 font-bold text-base">02</span>
+                    <div>
+                        <strong class="text-white block mb-1">Chování & Chat</strong>
+                        <span class="text-purple-200/70">Udržuj slušné chování. Zákaz urážek, rasismu, spamu a reklamy na jiné servery.</span>
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl glass-card flex items-start gap-3">
+                    <span class="text-emerald-400 font-bold text-base">03</span>
+                    <div>
+                        <strong class="text-white block mb-1">Griefing & Ničení</strong>
+                        <span class="text-purple-200/70">Griefing cizích staveb mimo povolené PvP oblasti je trestán trvalým banem.</span>
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl glass-card flex items-start gap-3">
+                    <span class="text-emerald-400 font-bold text-base">04</span>
+                    <div>
+                        <strong class="text-white block mb-1">Bugy & Zneužívání</strong>
+                        <span class="text-purple-200/70">Nalezené chyby hry okamžitě hlaš vedení serveru. Jejich zneužití se trestá.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="relative z-10 border-t border-purple-900/40 bg-[#06030e] py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+                <span class="text-lg font-black heading-font text-white">PEARL CRAFT</span>
+                <p class="text-xs text-purple-300/60 mt-1">© 2026 Pearl Craft Minecraft Server. Všechna práva vyhrazena.</p>
+            </div>
+            <div class="flex items-center gap-6 text-xs text-purple-300/70">
+                <a href="#home" class="hover:text-white">Úvod</a>
+                <a href="#gamemodes" class="hover:text-white">Módy</a>
+                <a href="#ranks" class="hover:text-white">VIP</a>
+                <a href="#forms" class="hover:text-white">Formuláře</a>
+            </div>
+            <!-- Secret Lock Icon Trigger -->
+            <button onclick="openAdminLoginModal()" title="Admin Panel" class="text-purple-400/40 hover:text-purple-300 transition-colors p-2 rounded-lg">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+            </button>
+        </div>
+    </footer>
+
+    <div id="admin-login-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden">
+        <div class="glass-card rounded-2xl p-6 sm:p-8 w-full max-w-md border border-purple-500/40 shadow-2xl relative">
+            <button onclick="closeAdminLoginModal()" class="absolute top-4 right-4 text-purple-400 hover:text-white">
+                ✕
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 rounded-full bg-purple-900/60 border border-purple-400/40 mx-auto flex items-center justify-center mb-3 text-purple-300">
+                    🔒
+                </div>
+                <h3 class="text-xl font-bold text-white heading-font">Vstup do Admin Panelu</h3>
+                <p class="text-xs text-purple-300/70 mt-1">Zadejte přihlašovací údaje pro správa serveru</p>
+            </div>
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-purple-300 uppercase mb-1">Uživatel</label>
+                    <input type="text" id="admin-user-input" required class="w-full px-4 py-2.5 rounded-xl dark-input-custom text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-purple-300 uppercase mb-1">Heslo</label>
+                    <input type="password" id="admin-pass-input" required class="w-full px-4 py-2.5 rounded-xl dark-input-custom text-sm">
+                </div>
+                <div id="admin-error-msg" class="text-xs text-red-400 font-bold hidden text-center">
+                    Nespravné uživatelské jméno nebo heslo!
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm transition-all shadow-lg shadow-purple-900/50">
+                    PŘIHLÁSIT SE
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="admin-panel-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden">
+        <div class="glass-card rounded-2xl p-6 sm:p-8 w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-purple-500/50 shadow-2xl relative">
+            <div class="flex items-center justify-between mb-6 border-b border-purple-900/50 pb-4">
+                <div class="flex items-center gap-3">
+                    <span class="px-3 py-1 bg-purple-900 text-purple-200 text-xs font-bold rounded-lg border border-purple-500/40">ADMIN</span>
+                    <h3 class="text-2xl font-bold text-white heading-font">Pearl Craft Správa Žádostí</h3>
+                </div>
+                <button onclick="closeAdminPanelModal()" class="px-3 py-1 bg-red-950 text-red-300 hover:bg-red-900 rounded-lg text-xs font-bold">
+                    Zavřít Panel
+                </button>
+            </div>
+
+            <!-- Admin Tabs -->
+            <div class="flex gap-4 mb-6 border-b border-purple-900/40 pb-2">
+                <button id="admin-tab-rec" onclick="switchAdminTab('recruitment')" class="px-4 py-2 rounded-lg font-bold text-xs bg-purple-600 text-white">
+                    Nábory (<span id="rec-count">0</span>)
+                </button>
+                <button id="admin-tab-unban" onclick="switchAdminTab('unban')" class="px-4 py-2 rounded-lg font-bold text-xs bg-purple-950 text-purple-300">
+                    Žádosti o Unban (<span id="unban-count">0</span>)
+                </button>
+            </div>
+
+            <!-- List Containers -->
+            <div id="admin-recruitment-list" class="space-y-4"></div>
+            <div id="admin-unban-list" class="space-y-4 hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            cs: {
+                nav_home: "Hlavní strana",
+                nav_modes: "Herní Módy",
+                nav_ranks: "Ranky Zdarma",
+                nav_forms: "Nábor & Unban",
+                nav_rules: "Pravidla",
+                hero_subtitle: "Prémiový československý Minecraft server zaměřený na pohodový Survival, férový OneBlock a akční PvP souboje! Připoj se ještě dnes!",
+                ip_label: "IP Adresa Serveru",
+                copy_ip_btn: "Kopírovat IP",
+                btn_explore_modes: "Prozkoumat Módy",
+                btn_join_team: "Podat Žádost / Nábor",
+                modes_title: "Unikátní Herní Módy",
+                modes_subtitle: "Vyber si svůj oblíbený styl hraní. Vše navrženo pro plynulý zážitek bez zbytečného balastu.",
+                survival_desc: "Čistá survival zábava bez zbytečných pluginů jako SlimeFun! Reálná ekonomika, náročné výzvy, komunitní land claimy a přátelské prostředí.",
+                oneblock_desc: "Klasický OneBlock zážitek na vyostřeném bloku bez nepřehledných fází! Stavěj svůj ostrov od jednoho bloku, rozšiřuj základnu a soupeř v žebříčcích.",
+                pvp_badge: "V PŘÍPRAVĚ",
+                pvp_desc: "Připravovaná PvP aréna! Těš se na speciální meče z Pearl, Golden Apples (Gapply) a souboje o hodnosti v intenzivních duelech.",
+                pvp_feat_1: "Speciální Pearl Meče & Gapply",
+                pvp_feat_2: "Arénový Ranking Systém",
+                pvp_feat_3: "Pravidelné PvP Turnaje",
+                ranks_title: "Hodnosti & VIP ZDARMA",
+                ranks_subtitle: "Na Pearl Craftu se výhody NEKUPUJÍ za reálné peníze! Všechny hodnosti získáváte zdarma za odehraný čas, hlasování pro server a učást v komunitních akcích.",
+                forms_title: "Komunitní Formuláře",
+                forms_subtitle: "Chceš se přidat do A-Týmu nebo řešíš udělený trest? Vyber formulář níže.",
+                rules_title: "Základní Pravidla Serveru",
+                rules_subtitle: "Dodržuj pravidla a užívej si hru bez komplikací."
+            },
+            en: {
+                nav_home: "Home",
+                nav_modes: "Game Modes",
+                nav_ranks: "Free Ranks",
+                nav_forms: "Recruitment & Unban",
+                nav_rules: "Rules",
+                hero_subtitle: "Premium Minecraft server focused on smooth Survival, balanced OneBlock, and upcoming action PvP battles! Join today!",
+                ip_label: "Server IP Address",
+                copy_ip_btn: "Copy IP",
+                btn_explore_modes: "Explore Modes",
+                btn_join_team: "Apply / Join Team",
+                modes_title: "Unique Game Modes",
+                modes_subtitle: "Choose your favorite play style. Everything built for smooth lag-free gameplay.",
+                survival_desc: "Pure survival fun without bloat plugins like SlimeFun! Real economy, land claims, and friendly community environment.",
+                oneblock_desc: "Classic OneBlock experience on a single block without chaotic phase stages! Build your island and climb the leaderboards.",
+                pvp_badge: "IN DEVELOPMENT",
+                pvp_desc: "Upcoming PvP Arena! Look forward to special Pearl Swords, Golden Apples (Gapples), and rank duels.",
+                pvp_feat_1: "Special Pearl Swords & Gapples",
+                pvp_feat_2: "Arena Ranking System",
+                pvp_feat_3: "Regular PvP Tournaments",
+                ranks_title: "100% FREE Ranks",
+                ranks_subtitle: "On Pearl Craft, advantages are NEVER sold for real money! Earn ranks by playing, voting, and participating.",
+                forms_title: "Community Forms",
+                forms_subtitle: "Want to join the staff team or appeal a ban? Choose below.",
+                rules_title: "Server Rules",
+                rules_subtitle: "Follow rules to ensure a great experience for everyone."
+            },
+            de: {
+                nav_home: "Startseite",
+                nav_modes: "Spielmodi",
+                nav_ranks: "Kostenlose Ränge",
+                nav_forms: "Team & Unban",
+                nav_rules: "Regeln",
+                hero_subtitle: "Premium Minecraft Server mit entspanntem Survival, fairem OneBlock und PvP-Kämpfen!",
+                ip_label: "Server IP-Adresse",
+                copy_ip_btn: "IP Kopieren",
+                btn_explore_modes: "Modi Erkunden",
+                btn_join_team: "Bewerben",
+                modes_title: "Einzigartige Spielmodi",
+                modes_subtitle: "Wähle deinen Lieblingsspielstil.",
+                survival_desc: "Reiner Survival-Spaß ohne störende Plugins wie SlimeFun!",
+                oneblock_desc: "Klassische OneBlock-Erfahrung ohne verwirrende Phasen.",
+                pvp_badge: "IN ENTWICKLUNG",
+                pvp_desc: "Kommende PvP Arena mit Pearl Schwertern und Goldenen Äpfeln (Gapples).",
+                pvp_feat_1: "Spezielle Pearl Schwerter & Gapples",
+                pvp_feat_2: "Arena-Rangsytem",
+                pvp_feat_3: "Regelmäßige PvP Turniere",
+                ranks_title: "100% Kostenlose Ränge",
+                ranks_subtitle: "Kein Pay-to-Win! Ränge gibt es nur durch Spielzeit & Votes.",
+                forms_title: "Formulare",
+                forms_subtitle: "Bewirb dich fürs Team oder beantrage einen Unban.",
+                rules_title: "Serverregeln",
+                rules_subtitle: "Halte dich an die Regeln."
+            },
+            pl: {
+                nav_home: "Strona Główna",
+                nav_modes: "Tryby Gry",
+                nav_ranks: "Darmowe Rangi",
+                nav_forms: "Rekrutacja & Unban",
+                nav_rules: "Zasady",
+                hero_subtitle: "Oficjalny serwer Minecraft z trybami Survival, OneBlock i nadchodzącym PvP!",
+                ip_label: "Adres IP Serwera",
+                copy_ip_btn: "Kopiuj IP",
+                btn_explore_modes: "Odkryj Tryby",
+                btn_join_team: "Dołącz do Ekipy",
+                modes_title: "Unikalne Tryby Gry",
+                modes_subtitle: "Wybierz swój ulubiony styl gry.",
+                survival_desc: "Czysty survival bez zbędnych pluginów typu SlimeFun!",
+                oneblock_desc: "Klasyczny OneBlock bez skomplikowanych faz.",
+                pvp_badge: "W PRZYGOTOWANIU",
+                pvp_desc: "Nadchodząca Arena PvP z mieczami Pearl i Złotymi Jabłkami.",
+                pvp_feat_1: "Specjalne Miecze Pearl & Gapple",
+                pvp_feat_2: "System Rankingowy Areny",
+                pvp_feat_3: "Regularne Turnieje PvP",
+                ranks_title: "100% DARMOWE Rangi",
+                ranks_subtitle: "Brak Pay-to-Win! Rangi zdobywasz za czas gry i głosowanie.",
+                forms_title: "Formularze",
+                forms_subtitle: "Złóż podanie do ekipy lub wniosek o unban.",
+                rules_title: "Zasady Serwera",
+                rules_subtitle: "Przestrzegaj zasad."
+            }
+        };
+
+        let currentLang = 'cs';
+
+        function changeLanguage(lang) {
+            if (!translations[lang]) return;
+            currentLang = lang;
+            const dict = translations[lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) {
+                    el.textContent = dict[key];
+                }
+            });
+        }
+
+        function copyServerIP() {
+            const ip = "pearlcraft.mangoohost.live";
+            const tempInput = document.createElement("input");
+            tempInput.value = ip;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            showToast("IP Adresa byla zkopírována! (pearlcraft.mangoohost.live)");
+        }
+
+        function showToast(message) {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            toast.className = "bg-[#130d24] text-purple-200 border border-emerald-500 px-5 py-3 rounded-xl shadow-2xl text-xs font-bold flex items-center gap-3 animate-bounce";
+            toast.innerHTML = `<span class="text-emerald-400 text-base">✓</span> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+        async function fetchServerStats() {
+            const ip = "pearlcraft.mangoohost.live";
+            const countEl = document.getElementById("player-count");
+            const statusText = document.getElementById("status-text");
+            const statusDot = document.getElementById("status-dot");
+            const statusPulse = document.getElementById("status-pulse");
+
+            try {
+                const response = await fetch(`https://api.mcsrvstat.us/2/${ip}`);
+                const data = await response.json();
+
+                if (data && data.online) {
+                    countEl.textContent = `${data.players.online} / ${data.players.max} hráčů`;
+                    statusText.textContent = "ONLINE";
+                    statusText.className = "text-xs font-bold uppercase tracking-widest text-emerald-300";
+                    statusDot.className = "relative inline-flex rounded-full h-3 w-3 bg-emerald-500";
+                    statusPulse.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75";
+                } else {
+                    countEl.textContent = "Server je offline nebo se spouští";
+                    statusText.textContent = "OFFLINE";
+                    statusText.className = "text-xs font-bold uppercase tracking-widest text-red-400";
+                    statusDot.className = "relative inline-flex rounded-full h-3 w-3 bg-red-500";
+                    statusPulse.className = "hidden";
+                }
+            } catch (e) {
+                countEl.textContent = "12 / 100 hráčů (Offline simulace)";
+            }
+        }
+
+        function switchFormTab(tab) {
+            const recContainer = document.getElementById("form-recruitment-container");
+            const unbanContainer = document.getElementById("form-unban-container");
+            const recBtn = document.getElementById("tab-recruitment-btn");
+            const unbanBtn = document.getElementById("tab-unban-btn");
+
+            if (tab === 'recruitment') {
+                recContainer.classList.remove("hidden");
+                unbanContainer.classList.add("hidden");
+                recBtn.className = "flex-1 py-3 rounded-lg font-bold text-sm transition-all bg-purple-600 text-white shadow-md";
+                unbanBtn.className = "flex-1 py-3 rounded-lg font-bold text-sm transition-all text-purple-300 hover:text-white";
+            } else {
+                recContainer.classList.add("hidden");
+                unbanContainer.classList.remove("hidden");
+                unbanBtn.className = "flex-1 py-3 rounded-lg font-bold text-sm transition-all bg-purple-600 text-white shadow-md";
+                recBtn.className = "flex-1 py-3 rounded-lg font-bold text-sm transition-all text-purple-300 hover:text-white";
+            }
+        }
+
+        function handleRecruitmentSubmit(e) {
+            e.preventDefault();
+            const data = {
+                id: Date.now(),
+                type: 'recruitment',
+                nick: document.getElementById("rec-nick").value,
+                age: document.getElementById("rec-age").value,
+                discord: document.getElementById("rec-discord").value,
+                role: document.getElementById("rec-role").value,
+                exp: document.getElementById("rec-exp").value,
+                date: new Date().toLocaleString(),
+                status: 'Čeká na vyřízení'
+            };
+
+            saveApplication(data);
+
+            // Open mailto link prefilled to koba.daniel.vitek@gmail.com
+            const emailSubject = encodeURIComponent(`Nábor Pearl Craft: ${data.nick} (${data.role})`);
+            const emailBody = encodeURIComponent(`Nová žádost do náboru:\n\nNick: ${data.nick}\nVěk: ${data.age}\nDiscord: ${data.discord}\nPozice: ${data.role}\nZkušenosti:\n${data.exp}\n\nDatum: ${data.date}`);
+            
+            window.location.href = `mailto:koba.daniel.vitek@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+
+            showToast("Žádost byla uložena a odeslána správci!");
+            document.getElementById("recruitment-form").reset();
+        }
+
+        function handleUnbanSubmit(e) {
+            e.preventDefault();
+            const data = {
+                id: Date.now(),
+                type: 'unban',
+                nick: document.getElementById("unban-nick").value,
+                discord: document.getElementById("unban-discord").value,
+                reason: document.getElementById("unban-reason").value,
+                admin: document.getElementById("unban-admin").value || 'Nespecifikováno',
+                explanation: document.getElementById("unban-explanation").value,
+                date: new Date().toLocaleString(),
+                status: 'Čeká na vyřízení'
+            };
+
+            saveApplication(data);
+
+            const emailSubject = encodeURIComponent(`Žádost o Unban Pearl Craft: ${data.nick}`);
+            const emailBody = encodeURIComponent(`Nová žádost o unban:\n\nNick: ${data.nick}\nDiscord: ${data.discord}\nDůvod banu: ${data.reason}\nAdmin: ${data.admin}\nVysvětlení:\n${data.explanation}\n\nDatum: ${data.date}`);
+            
+            window.location.href = `mailto:koba.daniel.vitek@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+
+            showToast("Žádost o unban byla uložena a odeslána správci!");
+            document.getElementById("unban-form").reset();
+        }
+
+        function saveApplication(app) {
+            const stored = JSON.parse(localStorage.getItem("pearl_craft_apps") || "[]");
+            stored.push(app);
+            localStorage.setItem("pearl_craft_apps", JSON.stringify(stored));
+        }
+
+        function openAdminLoginModal() {
+            document.getElementById("admin-login-modal").classList.remove("hidden");
+        }
+
+        function closeAdminLoginModal() {
+            document.getElementById("admin-login-modal").classList.add("hidden");
+            document.getElementById("admin-error-msg").classList.add("hidden");
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const user = document.getElementById("admin-user-input").value;
+            const pass = document.getElementById("admin-pass-input").value;
+
+            if (user === 'koba' && pass === '2015') {
+                closeAdminLoginModal();
+                openAdminPanel();
+            } else {
+                document.getElementById("admin-error-msg").classList.remove("hidden");
+            }
+        }
+
+        function openAdminPanel() {
+            document.getElementById("admin-panel-modal").classList.remove("hidden");
+            renderAdminData();
+        }
+
+        function closeAdminPanelModal() {
+            document.getElementById("admin-panel-modal").classList.add("hidden");
+        }
+
+        function renderAdminData() {
+            const apps = JSON.parse(localStorage.getItem("pearl_craft_apps") || "[]");
+            const recList = document.getElementById("admin-recruitment-list");
+            const unbanList = document.getElementById("admin-unban-list");
+
+            const recApps = apps.filter(a => a.type === 'recruitment');
+            const unbanApps = apps.filter(a => a.type === 'unban');
+
+            document.getElementById("rec-count").textContent = recApps.length;
+            document.getElementById("unban-count").textContent = unbanApps.length;
+
+            // Render Recruitment Apps
+            if (recApps.length === 0) {
+                recList.innerHTML = `<div class="text-center py-8 text-purple-300/50 text-sm">Žádné podané nábory.</div>`;
+            } else {
+                recList.innerHTML = recApps.map(item => `
+                    <div class="p-4 rounded-xl bg-[#130d24] border border-purple-900/50 flex flex-col gap-2">
+                        <div class="flex justify-between items-center border-b border-purple-900/30 pb-2">
+                            <span class="font-bold text-white">${item.nick} (${item.role})</span>
+                            <span class="text-xs text-purple-400">${item.date}</span>
+                        </div>
+                        <div class="text-xs text-purple-200"><strong>Věk:</strong> ${item.age} | <strong>Discord:</strong> ${item.discord}</div>
+                        <div class="text-xs text-purple-300 bg-purple-950/50 p-2 rounded">${item.exp}</div>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-xs font-bold text-amber-400">Stav: ${item.status}</span>
+                            <button onclick="deleteApp(${item.id})" class="px-3 py-1 bg-red-900/60 hover:bg-red-800 text-red-200 text-xs rounded-lg">Smazat</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Render Unban Apps
+            if (unbanApps.length === 0) {
+                unbanList.innerHTML = `<div class="text-center py-8 text-purple-300/50 text-sm">Žádné žádosti o unban.</div>`;
+            } else {
+                unbanList.innerHTML = unbanApps.map(item => `
+                    <div class="p-4 rounded-xl bg-[#130d24] border border-purple-900/50 flex flex-col gap-2">
+                        <div class="flex justify-between items-center border-b border-purple-900/30 pb-2">
+                            <span class="font-bold text-white">${item.nick}</span>
+                            <span class="text-xs text-purple-400">${item.date}</span>
+                        </div>
+                        <div class="text-xs text-purple-200"><strong>Discord:</strong> ${item.discord} | <strong>Důvod:</strong> ${item.reason} | <strong>Admin:</strong> ${item.admin}</div>
+                        <div class="text-xs text-purple-300 bg-purple-950/50 p-2 rounded">${item.explanation}</div>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-xs font-bold text-amber-400">Stav: ${item.status}</span>
+                            <button onclick="deleteApp(${item.id})" class="px-3 py-1 bg-red-900/60 hover:bg-red-800 text-red-200 text-xs rounded-lg">Smazat</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function switchAdminTab(tab) {
+            const recList = document.getElementById("admin-recruitment-list");
+            const unbanList = document.getElementById("admin-unban-list");
+            const recTab = document.getElementById("admin-tab-rec");
+            const unbanTab = document.getElementById("admin-tab-unban");
+
+            if (tab === 'recruitment') {
+                recList.classList.remove("hidden");
+                unbanList.classList.add("hidden");
+                recTab.className = "px-4 py-2 rounded-lg font-bold text-xs bg-purple-600 text-white";
+                unbanTab.className = "px-4 py-2 rounded-lg font-bold text-xs bg-purple-950 text-purple-300";
+            } else {
+                recList.classList.add("hidden");
+                unbanList.classList.remove("hidden");
+                unbanTab.className = "px-4 py-2 rounded-lg font-bold text-xs bg-purple-600 text-white";
+                recTab.className = "px-4 py-2 rounded-lg font-bold text-xs bg-purple-950 text-purple-300";
+            }
+        }
+
+        function deleteApp(id) {
+            let apps = JSON.parse(localStorage.getItem("pearl_craft_apps") || "[]");
+            apps = apps.filter(a => a.id !== id);
+            localStorage.setItem("pearl_craft_apps", JSON.stringify(apps));
+            renderAdminData();
+            showToast("Žádost byla smazána!");
+        }
+
+        window.onload = function() {
+            fetchServerStats();
+            setInterval(fetchServerStats, 60000); // refresh every minute
+        };
+    </script>
+</body>
+</html>
